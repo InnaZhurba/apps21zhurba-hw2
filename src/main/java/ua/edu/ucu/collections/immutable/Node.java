@@ -37,7 +37,7 @@ public class Node {
         return next;
     }
 
-    public void setNext(Node nxt) {//Node ne
+    public void setNext(Node nxt) { //Node ne
         next = nxt;
     }
 }
