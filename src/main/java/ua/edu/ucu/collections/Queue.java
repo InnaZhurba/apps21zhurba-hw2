@@ -4,14 +4,14 @@ import ua.edu.ucu.collections.immutable.ImmutableLinkedList;
 import ua.edu.ucu.collections.immutable.ImmutableList;
 
 public class Queue {
-    ImmutableList list = new ImmutableLinkedList();
+    private ImmutableList list = new ImmutableLinkedList();
 
     public Object peek() {
         if (list.isEmpty()) {
             return null;
         }
 
-        return ((ImmutableLinkedList)list).getFirst();
+        return ((ImmutableLinkedList) list).getFirst();
     }
 
     public Object dequeue() {
@@ -19,7 +19,7 @@ public class Queue {
             return null;
         }
 
-        Object first = ((ImmutableLinkedList)list).getFirst();
+        Object first = ((ImmutableLinkedList) list).getFirst();
         list = ((ImmutableLinkedList) list).removeFirst();
 
         return first;

@@ -18,16 +18,16 @@ public final class ImmutableLinkedList implements ImmutableList {
         length = 0;
     }
     private void addToEnd(Object e) {
-        Node new_node = new Node();
-        new_node.setValue(e);
+        Node newNode = new Node();
+        newNode.setValue(e);
 
         Node last = head;
-        new_node.setNext(null);
+        newNode.setNext(null);
 
         length++;
         if (head == null) {
-            new_node.setPrevious(null);
-            head = new_node;
+            newNode.setPrevious(null);
+            head = newNode;
             return;
         }
 
@@ -35,9 +35,9 @@ public final class ImmutableLinkedList implements ImmutableList {
             last = last.getNext();
         }
 
-        last.setNext(new_node);
+        last.setNext(newNode);
 
-        new_node.setPrevious(last);
+        newNode.setPrevious(last);
     }
     @Override
     public ImmutableList add(Object e) {
@@ -48,35 +48,35 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     @Override
     public ImmutableList add(int index, Object e) {
-        Node prev_Node = head;
+        Node prevNode = head;
 
         for (int i = 0; i < length; i++) {
 
             if (index - 1 <= 0) {
-                index = 1;
+                return null;
             }
 
             if (i == index - 1) {
 
-                if (prev_Node == null) {
+                if (prevNode == null) {
                     break;
                 }
 
-                Node new_node = new Node();
-                new_node.setValue(e);
+                Node newNode = new Node();
+                newNode.setValue(e);
 
-                new_node.setNext(prev_Node.getNext());
+                newNode.setNext(prevNode.getNext());
 
-                prev_Node.setNext(new_node);
+                prevNode.setNext(newNode);
 
-                new_node.setPrevious(prev_Node);
+                newNode.setPrevious(prevNode);
 
-                if (new_node.getNext() != null) {
-                    new_node.getNext().setPrevious(new_node);
+                if (newNode.getNext() != null) {
+                    newNode.getNext().setPrevious(newNode);
                 }
                 length++;
             }
-            prev_Node = prev_Node.getNext();
+            prevNode = prevNode.getNext();
         }
 
         return new ImmutableLinkedList(toArray());
@@ -95,8 +95,8 @@ public final class ImmutableLinkedList implements ImmutableList {
     @Override
     public ImmutableList addAll(int index, Object[] c) {
 
-        for (int i = index-1, j = 0; i < index - 1 + c.length; i++, j++) {
-            add(i,c[j]);
+        for (int i = index - 1, j = 0; i < index - 1 + c.length; i++, j++) {
+            add(i, c[j]);
         }
 
         return new ImmutableLinkedList(toArray());
@@ -155,7 +155,7 @@ public final class ImmutableLinkedList implements ImmutableList {
     public ImmutableList set(int index, Object e) {
 
         remove(index);
-        add(index-1,e);
+        add(index-1, e);
 
         return new ImmutableLinkedList(toArray());
     }
@@ -166,7 +166,7 @@ public final class ImmutableLinkedList implements ImmutableList {
         Node template = head;
 
         for (int i = 0; i < length; i++) {
-            if(template.getValue() == e) {
+            if (template.getValue() == e) {
                 return i;
             }
             template = template.getNext();
@@ -187,32 +187,33 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     @Override
     public boolean isEmpty() {
-        return length<=0;
+        return length <= 0;
     }
 
     @Override
     public Object[] toArray() {
         Object[] newArr = new Object[length];
         Node tmp = head;
-        for(int i=0;i<length;i++){
-            newArr[i]=tmp.getValue();
-            tmp=tmp.getNext();
+        for (int i = 0; i < length; i++) {
+            newArr[i] = tmp.getValue();
+            tmp = tmp.getNext();
         }
         return newArr;
     }
 
     public ImmutableLinkedList addFirst(Object e) {
 
-        Node new_Node = new Node();
-        new_Node.setValue(e);
+        Node newNode = new Node();
+        newNode.setValue(e);
 
-        new_Node.setNext(head);
-        new_Node.setPrevious(null);
+        newNode.setNext(head);
+        newNode.setPrevious(null);
 
-        if (head != null)
-            head.setPrevious(new_Node);
+        if (head != null) {
+            head.setPrevious(newNode);
+        }
 
-        head = new_Node;
+        head = newNode;
         length++;
 
         return new ImmutableLinkedList(toArray());
@@ -251,11 +252,11 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     public ImmutableLinkedList removeFirst() {
 
-        return ((ImmutableLinkedList)remove(1));
+        return ((ImmutableLinkedList) remove(1));
     }
 
     public ImmutableLinkedList removeLast() {
 
-        return ((ImmutableLinkedList)remove(length));
+        return ((ImmutableLinkedList) remove(length));
     }
 }

@@ -6,8 +6,8 @@ public class Node {
     private Object value;
 
     public Node() {
-        previous=null;
-        next=null;
+        previous = null;
+        next = null;
         value = null;
     }
 
@@ -22,7 +22,7 @@ public class Node {
     }
 
     public void setPrevious(Node prev) {
-        previous=prev;
+        previous = prev;
     }
 
     public Object getValue() {
@@ -30,7 +30,7 @@ public class Node {
     }
 
     public void setValue(Object val) {
-        value=val;
+        value = val;
     }
 
     public Node getNext() {
@@ -38,7 +38,7 @@ public class Node {
     }
 
     public void setNext(Node nxt) {//Node ne
-        next=nxt;
+        next = nxt;
     }
 }
 

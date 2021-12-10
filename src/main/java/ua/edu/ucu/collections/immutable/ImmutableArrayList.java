@@ -1,5 +1,4 @@
 package ua.edu.ucu.collections.immutable;
-
 import static java.lang.System.arraycopy;
 
 public final class ImmutableArrayList implements ImmutableList {
@@ -74,7 +73,7 @@ public final class ImmutableArrayList implements ImmutableList {
         Object[] listArr = toArray();
 
         for (int i = index, j = 0; i < index + c.length; i++, j++) {
-            listArr = addElementByInd(i,c[j],listArr);//add(i,c[j]);
+            listArr = addElementByInd(i, c[j], listArr);//add(i,c[j]);
         }
 
         return new ImmutableArrayList(listArr);
@@ -83,8 +82,9 @@ public final class ImmutableArrayList implements ImmutableList {
     @Override
     public Object get(int index) {
 
-         if (index <= currentSize)
-             return list[index-1].getValue();
+         if (index <= currentSize) {
+             return list[index - 1].getValue();
+         }
 
         return null;
     }
@@ -92,8 +92,9 @@ public final class ImmutableArrayList implements ImmutableList {
     @Override
     public ImmutableList remove(int index) {
 
-        if(index>currentSize)
+        if (index > currentSize) {
             return null;
+        }
 
         Object[] listArr = toArray();
 
@@ -101,8 +102,8 @@ public final class ImmutableArrayList implements ImmutableList {
     }
     private Object[] removeFromArr(int index, Object[] listArr) {
 
-        Object[] newArr = new Object[length-1];
-        arraycopy(listArr,0,newArr,0, index-1);
+        Object[] newArr = new Object[length - 1] ;
+        arraycopy(listArr,0, newArr,0, index-1);
 
         for (int i = index-1, j = index; j < listArr.length; i++, j++) {
             newArr[i] = listArr[j];
@@ -125,7 +126,7 @@ public final class ImmutableArrayList implements ImmutableList {
     public int indexOf(Object e) {
 
         for (int i = 0; i < length; i++) {
-            if(list[i].getValue() == e) {
+            if (list[i].getValue() == e) {
                 return i;
             }
         }
@@ -145,18 +146,20 @@ public final class ImmutableArrayList implements ImmutableList {
 
     @Override
     public boolean isEmpty() {
-        return currentSize<=0;
+        return currentSize <= 0;
     }
 
     @Override
     public Object[] toArray() {
-        Object[] newArr = new Object[length];
+        Object[] newArr = new Object[length] ;
 
-        for (int i = 0; i < currentSize; i++){
+        for (int i = 0; i < currentSize; i++) {
             newArr[i] = list[i].getValue();
         }
+
         return newArr;
     }
+
     private void resizeArray(){
         length = length+1;
         Node[] newArr = new Node[length];
