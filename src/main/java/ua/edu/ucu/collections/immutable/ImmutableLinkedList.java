@@ -8,6 +8,7 @@ public final class ImmutableLinkedList implements ImmutableList {
     private int length;
 
     public ImmutableLinkedList(Object[] elements) {
+        length = 0;
         for (Object element : elements) {
             addToEnd(element);
         }

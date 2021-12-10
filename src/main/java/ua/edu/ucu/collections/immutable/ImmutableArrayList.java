@@ -1,43 +1,36 @@
 package ua.edu.ucu.collections.immutable;
 
 import java.lang.module.FindException;
-import java.util.Arrays;
+
+import static java.lang.System.arraycopy;
 
 public final class ImmutableArrayList implements ImmutableList {
-    private Node head;//final?
+    private Node[] list = new Node[1];
     private int length;
+    private int currentSize;
 
     public ImmutableArrayList(Object[] elements) {
+        length = list.length;
+        currentSize = 0;
+        //list = new Node[elements.length];
         for (Object element : elements) {
             addToEnd(element);
         }
     }
 
     public ImmutableArrayList() {
-        head = null;
-        length = 0;
+
+        list = new Node[length+1];
     }
     private void addToEnd(Object e) {
-        Node new_node = new Node();
-        new_node.setValue(e);
 
-        Node last = head;
-        new_node.setNext(null);
-
-        length++;
-        if (head == null) {
-            new_node.setPrevious(null);
-            head = new_node;
-            return;
+        if (currentSize >= length) {
+            resizeArray();
         }
 
-        while (last.getNext() != null) {
-            last = last.getNext();
-        }
-
-        last.setNext(new_node);
-
-        new_node.setPrevious(last);
+        list[currentSize] = new Node();
+        list[currentSize].setValue(e);
+        currentSize++;
 }
     @Override
     public ImmutableList add(Object e) {
@@ -48,38 +41,23 @@ public final class ImmutableArrayList implements ImmutableList {
 
     @Override
     public ImmutableList add(int index, Object e) {
-        Node prev_Node = head;
 
-        for (int i = 0; i < length; i++) {
+        Object[] listArr = toArray();
 
-            if (index - 1 <= 0) {
-                index = 1;
-            }
+        return new ImmutableArrayList(addElementByInd(index, e, listArr));
+    }
+    private Object[] addElementByInd(int index, Object e, Object[] listArr) {
 
-            if (i == index - 1) {
+        Object[] newArr = new Object[listArr.length+1];
 
-                if (prev_Node == null) {
-                    break;
-                }
+        arraycopy(listArr, 0, newArr, 0, index-1);
+        newArr[index-1] = e;
 
-                Node new_node = new Node();
-                new_node.setValue(e);
-
-                new_node.setNext(prev_Node.getNext());
-
-                prev_Node.setNext(new_node);
-
-                new_node.setPrevious(prev_Node);
-
-                if (new_node.getNext() != null) {
-                    new_node.getNext().setPrevious(new_node);
-                }
-                length++;
-            }
-            prev_Node = prev_Node.getNext();
+        for (int i = index, j = index - 1; j < listArr.length; i++, j++) {
+            newArr[i] = listArr[j];
         }
 
-        return new ImmutableArrayList(toArray());
+        return newArr;
     }
 
     @Override
@@ -95,26 +73,20 @@ public final class ImmutableArrayList implements ImmutableList {
     @Override
     public ImmutableList addAll(int index, Object[] c) {
 
-        for (int i = index-1, j = 0; i < index - 1 + c.length; i++, j++) {
-            add(i,c[j]);
+        Object[] listArr = toArray();
+
+        for (int i = index, j = 0; i < index + c.length; i++, j++) {
+            listArr = addElementByInd(i,c[j],listArr);//add(i,c[j]);
         }
 
-        return new ImmutableArrayList(toArray());
+        return new ImmutableArrayList(listArr);
     }
 
     @Override
     public Object get(int index) {
 
-        Node template = head;
-
-        for (int i = 0; i < length; i++) {
-
-            if (i == index - 1) {
-                return template.getValue();
-            }
-
-            template = template.getNext();
-        }
+         if (index <= currentSize)
+             return list[index-1].getValue();
 
         return null;
     }
@@ -122,55 +94,42 @@ public final class ImmutableArrayList implements ImmutableList {
     @Override
     public ImmutableList remove(int index) {
 
-        Node template = head;
+        if(index>currentSize)
+            return null;
 
-        for (int i = 0; i < length; i++) {
+        Object[] listArr = toArray();
 
-            if (i == index - 1) {
-                if (template == null) {
-                    break;
-                }
+        return new ImmutableArrayList(removeFromArr(index, listArr));
+    }
+    private Object[] removeFromArr(int index, Object[] listArr) {
 
-                if (head == template) {
-                    head = template.getNext();
-                }
+        Object[] newArr = new Object[length-1];
+        arraycopy(listArr,0,newArr,0, index-1);
 
-                if (template.getNext() != null) {
-                    template.getNext().setPrevious(template.getPrevious());
-                }
-
-                if (template.getPrevious() != null) {
-                    template.getPrevious().setNext(template.getNext());
-                }
-                length--;
-                //return new ImmutableArrayList(toArray());
-                break;
-            }
-                template = template.getNext();
+        for (int i = index-1, j = index; j < listArr.length; i++, j++) {
+            newArr[i] = listArr[j];
         }
 
-        return new ImmutableArrayList(toArray());
+        return newArr;
     }
 
     @Override
     public ImmutableList set(int index, Object e) {
 
-        remove(index);
-        add(index-1,e);
+        Object[] newArr = toArray();
+        newArr = removeFromArr(index, newArr);
+        newArr = addElementByInd(index, e, newArr);
 
-        return new ImmutableArrayList(toArray());
+        return new ImmutableArrayList(newArr);
     }
 
     @Override
     public int indexOf(Object e) {
 
-        Node template = head;
-
         for (int i = 0; i < length; i++) {
-            if(template.getValue() == e) {
+            if(list[i].getValue() == e) {
                 return i;
             }
-            template = template.getNext();
         }
 
         throw new FindException();
@@ -178,33 +137,34 @@ public final class ImmutableArrayList implements ImmutableList {
 
     @Override
     public int size() {
-        return length;
+        return currentSize;
     }
 
     @Override
     public ImmutableList clear() {
-        return new ImmutableLinkedList();
+        return new ImmutableArrayList();
     }
 
     @Override
     public boolean isEmpty() {
-        return length<=0;
+        return currentSize<=0;
     }
 
     @Override
     public Object[] toArray() {
         Object[] newArr = new Object[length];
-        Node tmp = head;
-        for(int i=0;i<length;i++){
-            newArr[i]=tmp.getValue();
-            tmp=tmp.getNext();
+
+        for (int i = 0; i < currentSize; i++){
+            newArr[i] = list[i].getValue();
         }
         return newArr;
     }
-    private Object[] resizeArray(Object[] arr){
-        Object[] newArr = new Object[arr.length*2];
+    private void resizeArray(){
+        length = length+1;
+        Node[] newArr = new Node[length];
 
-        System.arraycopy(arr, 0, newArr, 0, arr.length);
-        return newArr;
+        arraycopy(list, 0, newArr, 0, list.length);
+
+        list = newArr;
     }
 }

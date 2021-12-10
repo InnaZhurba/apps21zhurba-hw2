@@ -1,10 +1,8 @@
 package ua.edu.ucu.collections.immutable;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -29,11 +27,12 @@ public class ImmutableArrayListTest {
 
     @Test
     public void testTestAdd() {
-        Integer[] newArr = new Integer[]{4,4,2,4,5,6,7,8,5,3,1};
+        Integer[] newArr = new Integer[]{4,4,2,4,5,6,7,5,8,3,1};
         ImmutableList expected = new ImmutableArrayList(newArr);
 
         Object[] actual = list.add(8,5).toArray();
-        assertArrayEquals(expected.toArray(),actual);
+        Object[] expectedRes = expected.toArray();
+        assertArrayEquals(expectedRes,actual);
     }
 
     @Test
