@@ -103,7 +103,7 @@ public final class ImmutableArrayList implements ImmutableList {
     private Object[] removeFromArr(int index, Object[] listArr) {
 
         Object[] newArr = new Object[length - 1];
-        arraycopy(listArr,0, newArr,0, index - 1);
+        arraycopy(listArr, 0, newArr, 0, index - 1);
 
         for (int i = index-1, j = index; j < listArr.length; i++, j++) {
             newArr[i] = listArr[j];
