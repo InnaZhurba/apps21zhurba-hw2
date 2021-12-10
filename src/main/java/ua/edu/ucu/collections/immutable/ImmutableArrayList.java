@@ -1,5 +1,4 @@
 package ua.edu.ucu.collections.immutable;
-import static java.lang.System.arraycopy;
 
 public final class ImmutableArrayList implements ImmutableList {
     private Node[] list = new Node[1];
@@ -47,7 +46,7 @@ public final class ImmutableArrayList implements ImmutableList {
 
         Object[] newArr = new Object[listArr.length+1];
 
-        arraycopy(listArr, 0, newArr, 0, index-1);
+        System.arraycopy(listArr, 0, newArr, 0, index-1);
         newArr[index-1] = e;
 
         for (int i = index, j = index - 1; j < listArr.length; i++, j++) {
@@ -103,7 +102,7 @@ public final class ImmutableArrayList implements ImmutableList {
     private Object[] removeFromArr(int index, Object[] listArr) {
 
         Object[] newArr = new Object[length - 1];
-        arraycopy(listArr, 0, newArr, 0, index - 1);
+        System.arraycopy(listArr, 0, newArr, 0, index - 1);
 
         for (int i = index-1, j = index; j < listArr.length; i++, j++) {
             newArr[i] = listArr[j];
@@ -164,7 +163,7 @@ public final class ImmutableArrayList implements ImmutableList {
         length = length + 1;
         Node[] newArr = new Node[length];
 
-        arraycopy(list, 0, newArr, 0, list.length);
+        System.arraycopy(list, 0, newArr, 0, list.length);
 
         list = newArr;
     }
