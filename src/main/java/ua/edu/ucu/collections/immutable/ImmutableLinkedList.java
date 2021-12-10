@@ -1,6 +1,5 @@
 package ua.edu.ucu.collections.immutable;
 
-import java.lang.module.FindException;
 
 public final class ImmutableLinkedList implements ImmutableList {
 
@@ -173,7 +172,7 @@ public final class ImmutableLinkedList implements ImmutableList {
             template = template.getNext();
         }
 
-        throw new FindException();
+        return 0;
     }
 
     @Override

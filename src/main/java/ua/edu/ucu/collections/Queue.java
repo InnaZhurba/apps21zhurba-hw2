@@ -1,6 +1,7 @@
 package ua.edu.ucu.collections;
 
 public class Queue {
+
     public Object peek() {
         return null;
     }

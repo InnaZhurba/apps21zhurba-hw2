@@ -1,7 +1,5 @@
 package ua.edu.ucu.collections.immutable;
 
-import java.lang.module.FindException;
-
 import static java.lang.System.arraycopy;
 
 public final class ImmutableArrayList implements ImmutableList {
@@ -132,7 +130,7 @@ public final class ImmutableArrayList implements ImmutableList {
             }
         }
 
-        throw new FindException();
+        return 0;
     }
 
     @Override
